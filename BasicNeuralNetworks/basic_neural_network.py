@@ -48,7 +48,15 @@ trainning = tf.train.GradientDescentOptimizer(learning_rate=0.5).minimize(cross_
 init = tf.initialize_all_variables()
 # ================ launch the model in a Session ================
 
-session = tf.Session()
+"""
+InteractiveSession class :
+    which makes TensorFlow more flexible about how you structure your code.
+    It allows you to interleave operations which build a computation graph
+    with ones that run the graph.
+
+"""
+session = tf.InteractiveSession()
+# session = tf.Session()
 session.run(fetches=init)
 
 # trainning the model
