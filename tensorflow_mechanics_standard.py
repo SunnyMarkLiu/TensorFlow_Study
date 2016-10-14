@@ -136,10 +136,10 @@ def trainning(learning_rate):
     # use the default graph
     with tf.Graph().as_default():
         images_placeholder, labels_placeholder = placeholder_inputs(FLAGS.batch_size)
-        predict_out = build_model(images_placeholder,
+        logits = build_model(images_placeholder,
                                   FLAGS.hidden1_units,
                                   FLAGS.hidden2_units)
-        loss = evaluate_loss(predict_out, labels_placeholder)
+        loss = evaluate_loss(logits, labels_placeholder)
 
         # Add a scalar summary for the snapshot loss.
         tf.scalar_summary(loss.op.name, loss)
