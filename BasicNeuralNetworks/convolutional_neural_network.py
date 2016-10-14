@@ -19,8 +19,6 @@ y_correct = tf.placeholder(tf.float32, [None, 10], name="correct_labels")
 """
 Weight Initialization
 """
-
-
 def weight_variable(shape, name):
     initial = tf.truncated_normal(shape, stddev=0.1)
     return tf.Variable(initial, name=name)
@@ -38,8 +36,6 @@ def bias_variable(shape, name):
 """
 Convolution and Pooling
 """
-
-
 def conv2d(x_, W):
     return tf.nn.conv2d(x_, W, strides=[1, 1, 1, 1], padding='SAME')
 
@@ -106,33 +102,25 @@ y = tf.nn.softmax(tf.matmul(full_con_dropout, W_full_con_out) + b_full_con_out)
 """
 Train and Evaluate the Model
 """
-cross_entropy = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(y, y_correct), name="cross_entropy")
-
-# Add a scalar summary for the snapshot cross_entropy.
-tf.scalar_summary(cross_entropy.op.name, cross_entropy)
+cross_entropy = tf.nn.softmax_cross_entropy_with_logits(y, y_correct, name="cross_entropy")
 
 # ask TensorFlow to minimize cross_entropy
-trainning = tf.train.GradientDescentOptimizer(learning_rate=0.001).minimize(cross_entropy)
+# trainning = tf.train.AdagradOptimizer(learning_rate=0.0001).minimize(cross_entropy)             # test accuracy 0.8562
+trainning = tf.train.GradientDescentOptimizer(learning_rate=0.0001).minimize(cross_entropy)   # test accuracy 0.9808
 correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_correct, 1))
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32), name="accuracy")
 
-summary = tf.merge_all_summaries()
-
 init = tf.initialize_all_variables()
 session = tf.InteractiveSession()
-summary_writer = tf.train.SummaryWriter("MNIST_data/", session.graph)
 
 session.run(init)
 
 # trainning
-for i in xrange(1000):
-    batch_x, batch_y = mnist.train.next_batch(100)
+for i in xrange(40000):
+    batch_x, batch_y = mnist.train.next_batch(50)
     if i % 50 == 0:
         print "step %d, training accuracy %g" % \
               (i, accuracy.eval(feed_dict={x: batch_x, y_correct: batch_y, keep_prob: 1}))
-        summary_str = summary.eval(feed_dict={x: batch_x, y_correct: batch_y, keep_prob: 1})
-        summary_writer.add_summary(summary_str, i)
-        summary_writer.flush()
 
     session.run(trainning, feed_dict={x: batch_x, y_correct: batch_y, keep_prob: 0.5})
 
