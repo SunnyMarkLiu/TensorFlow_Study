@@ -105,7 +105,7 @@ Train and Evaluate the Model
 cross_entropy = tf.nn.softmax_cross_entropy_with_logits(y, y_correct, name="cross_entropy")
 
 # ask TensorFlow to minimize cross_entropy
-# trainning = tf.train.AdagradOptimizer(learning_rate=0.0001).minimize(cross_entropy)             # test accuracy 0.8562
+# trainning = tf.train.AdagradOptimizer(learning_rate=0.0001).minimize(cross_entropy)         # test accuracy 0.8562
 trainning = tf.train.GradientDescentOptimizer(learning_rate=0.0001).minimize(cross_entropy)   # test accuracy 0.9808
 correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_correct, 1))
 accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32), name="accuracy")
