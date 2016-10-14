@@ -148,7 +148,7 @@ def trainning(learning_rate):
         train_op = tf.train.GradientDescentOptimizer(learning_rate).minimize(loss)
 
         # 评估预测正确的 op
-        eval_correct_op = evaluate(predict_out, labels_placeholder)
+        eval_correct_op = evaluate(logits, labels_placeholder)
 
         # Build the summary Tensor based on the TF collection of Summaries.
         summary = tf.merge_all_summaries()
