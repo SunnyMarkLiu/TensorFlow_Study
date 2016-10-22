@@ -36,13 +36,15 @@ def bias_variable(shape, name):
 """
 Convolution and Pooling
 """
-def conv2d(x_, W):
-    return tf.nn.conv2d(x_, W, strides=[1, 1, 1, 1], padding='SAME')
+def conv2d(x_, W, strides=1):
+    # Conv2D
+    return tf.nn.conv2d(x_, W, strides=[1, strides, strides, 1], padding='SAME')
 
 
-def max_pool_2x2(x_):
-    return tf.nn.max_pool(x_, ksize=[1, 2, 2, 1],
-                          strides=[1, 2, 2, 1], padding='SAME')
+def max_pool_2x2(x_, k=2):
+    # max pooling
+    return tf.nn.max_pool(x_, ksize=[1, k, k, 1],
+                          strides=[1, k, k, 1], padding='SAME')
 
 
 """
