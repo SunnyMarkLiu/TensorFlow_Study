@@ -53,13 +53,20 @@ It will consist of convolution, followed by max pooling.
 5 x 5: patch size, local receptive fields;
 1    : the number of input channels
 32   : the number of output channels, features
+
+[filter_height, filter_width, in_channels, out_channels]
 """
 W_conv1 = weight_variable([5, 5, 1, 32], "W_conv1")
 b_conv1 = bias_variable([32], "b_conv1")
 
-# To apply the layer, we first reshape x to a 4d tensor， then convolve x_image with the weight tensor
-# 28 x 28 : image size
-# 1       : one channel
+"""
+To apply the layer, we first reshape x to a 4d tensor， then convolve x_image with the weight tensor
+-1      : represent some other number, according to batch size of input images
+28 x 28 : image size
+1       : one channel
+
+[batch, in_height, in_width, in_channels]
+"""
 x_image = tf.reshape(x, [-1, 28, 28, 1])
 
 hidden_conv1 = tf.nn.relu(conv2d(x_image, W_conv1) + b_conv1)
